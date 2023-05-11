@@ -4,6 +4,8 @@ import json
 import plotly
 import plotly.express as px
 import requests
+from pymongo import MongoClient
+
 
 app = Flask(__name__)
 
@@ -13,10 +15,13 @@ def index():
 
 @app.route('/chart1')
 def chart1():
-    r = requests.get('http://127.0.0.1:4000/getrest?diabetes=2')
-    data = r.text
-    Mydf = pd.read_json(data, orient='records')
-    df = Mydf[[
+    # create an instance of MongoClient
+    mongo = MongoClient(port=27017)
+    # make a reference to the new database named "project3" with the collection named test_project3
+    db = mongo.project3
+    collection = db.test_project3
+    results = pd.DataFrame(collection.find({}))
+    df = results[[ "Diabetes_binary",
         "HighBP",
         "HighChol",
         "Smoker",
@@ -24,7 +29,7 @@ def chart1():
         "HeartDiseaseorAttack",
     ]]
     df1 = df.sum().reset_index(name='Sum')
-    df1.index = ['High BP', 'High Cholestrol', 'Smoker', 'Stroke', 'Heart Disease']
+    df1.index = ['Diabetes_binary','High BP', 'High Cholestrol', 'Smoker', 'Stroke', 'Heart Disease']
 #    df = pd.DataFrame({
 #        "Disease": ["Stroke", "Cholestrol", "High BP", "Smokers", "Stroke", "Cholestrol","High BP","Smokers"],
 #        "FieldVal": [1, 1, 1, 1, 1, 1,0,0],
@@ -43,28 +48,33 @@ def chart1():
 
 @app.route('/chart2')
 def chart2():
-    r = requests.get('http://127.0.0.1:4000/getrest?stroke=1')
-    data = r.text
-    Mydf = pd.read_json(data, orient='records')
-    df = Mydf[[
+    # create an instance of MongoClient
+    mongo = MongoClient(port=27017)
+    # make a reference to the new database named "project3" with the collection named test_project3
+    db = mongo.project3
+    collection = db.test_project3
+    results = pd.DataFrame(collection.find({}))
+    df = results[[ "Diabetes_binary",
         "HighBP",
         "HighChol",
         "Smoker",
-        "Diabetes_012",
+        "Stroke",
         "HeartDiseaseorAttack",
     ]]
-    df2 = Mydf.query("Diabetes_012 == 2")
-    df3 = Mydf.query("HighBP == 1")
-    df4 = Mydf.query("Smoker == 1")
-    df5 = Mydf.query("HighChol==1")
-    df6 = Mydf.query("HeartDiseaseorAttack==1")
+    df2 = df.query("Diabetes_binary == 1")
+    df3 = df.query("HighBP == 1")
+    df4 = df.query("Smoker == 1")
+    df5 = df.query("HighChol==1")
+    df6 = df.query("HeartDiseaseorAttack==1")
+    df7 = df.query("Stroke == 1")
     df2 = df2.count()[0]
     df3 = df3.count()[0]
     df4 = df4.count()[0]
     df5 = df5.count()[0]
     df6 = df6.count()[0]
-    index_labels = ['Diabetes', 'High BP', 'Smoker', 'High Chol', "Heart Disease"]
-    index_values = [df2, df3, df4, df5, df6]
+    df7 = df7.count()[0]
+    index_labels = ['Diabetes', 'High BP', 'Smoker', 'High Chol', "Heart Disease","Stroke"]
+    index_values = [df2, df3, df4, df5, df6, df7]
 
 #    df = pd.DataFrame({
 #        "Disease": ["Stroke", "Cholestrol", "High BP", "Smokers", "Stroke", "Cholestrol","High BP","Smokers"],
