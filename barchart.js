@@ -1,3 +1,79 @@
+let url = "project3data.json"
+
+// Fetch the JSON data and console log it
+d3.json(url).then(function(data) {
+    console.log(data);
+  });
+  
+  
+  // Initialize the dashboard at start up 
+  function init() {
+  
+      // Use D3 to select the dropdown menu
+      let dropdownMenu = d3.select("#selDataset");
+  
+      // Use D3 to get sample names and populate the drop-down selector
+      d3.json(url).then((data) => {
+          
+          // Collects all sample names
+          let ID = data._id.$oid;
+  
+          // set a function to log each ID of each sample name
+          // also we create a drop down menu that allows us
+          // to select whichever ID we want to select and see 
+          // on our bar and bubble plots
+          ID.forEach((id) => {
+  
+              // Log the value of id for each iteration of the loop
+              console.log(id);
+  
+              dropdownMenu.append("option") // allows us to select 
+              .text(id); // shows each ID as an option to select
+          });
+  
+          // to get our initial value for each sample
+          // which includes all our needed values
+          let sample_one = ID[0];
+  
+          // Log the value of sample_one
+          console.log(sample_one);
+  
+          // Build the initial plots
+          Metadata(sample_one);
+          Bar(sample_one);
+          // these functions will be created before we
+          // ever call the init() function
+  
+      });
+  };
+  // Function that fills out our "Demographic Info" box
+function Metadata(sample) {
+
+    // Use D3 to retrieve all of the data
+    d3.json(url).then((data) => {
+
+        // Retrieve all metadata
+        let metadata = data.HighBP;
+
+        // Filter only to chosen ID
+        let v1Y = metadata.filter(result => result.HighBP == 1);
+        console.log(v1Y)
+        let v1N = metadata.filter(result => result.HighBP == 0);
+        console.log(v1N)
+        let v2Y = metadata.filter(result => result.HighChol == 1);
+        let v2N = metadata.filter(result => result.HighChol == 0);
+        let v3Y = metadata.filter(result => result.Smoker == 1);
+        let v3N = metadata.filter(result => result.Smoker == 0);
+        let v4Y = metadata.filter(result => result.Stroke == 1);
+        let v4N = metadata.filter(result => result.Stroke == 0);
+        let v5Y = metadata.filter(result => result.HeartDiseaseorAttack == 1);
+        let v5N = metadata.filter(result => result.HeartDiseaseorAttack == 0);
+        // remember, each ID will have all the subordinate demographic info
+
+    });
+};
+
+
 // use d3 to access data fron json file
 d3.json("project3data.json").then(function(data){
     //view data in console
