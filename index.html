@@ -7,36 +7,26 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Diabetes Analysis</title>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.js"></script> 
 </head>
 
 <body>
+
+  <div id="app">
+    <center><button @click="show = !show">
+     View Disclaimer
+    </button></center>
+    <div v-if="show">
+     {{disclaimer}}</div>
+
+
 
   <div class="container">
     <div class="row">
       <div class="col-md-12 jumbotron text-center">
         <h1>Diabetes Data Exploration</h1>
 
-        <p><center>
-            The information provided by Team Fuchsia is intended for
-            educational and informational purposes only and is not intended 
-            to be a substitute for professional medical advice, diagnosis, 
-            or treatment. The content on this website is not intended to 
-            diagnose, treat, cure, or prevent any disease or medical 
-            condition, including diabetes.<br>
-            The information provided by Team Fuchsia is based on general 
-            research and data and is not tailored to individual health 
-            conditions or circumstances. Therefore, Team Fuchsia cannot 
-            guarantee the accuracy, completeness, or timeliness of the 
-            information provided.<br>
-            If you suspect that you have diabetes or any other medical 
-            condition, you should consult a qualified healthcare provider 
-            immediately. Do not rely solely on the information provided by 
-            Team Fuchsia for your health or well-being.<br>
-            By viewing Team Fuchsia's dashboard, you acknowledge and agree 
-            that Team Fuchsia is not responsible or liable for any claim, 
-            loss, or damage resulting from your use of the information 
-            provided.
-        </p></center>
+
         <p>Use the interactive charts below to explore the dataset</p>
         </p>
       </div>
@@ -63,6 +53,9 @@
     </div>
     <div class="row">
       <div class="col-md-12">
+        <div id="plot"></div>
+
+
         
       </div>
     </div>
@@ -72,7 +65,20 @@
         </center>
   <script src="https://d3js.org/d3.v5.min.js"></script>
   <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-  
+  <script src="barchart.js"></script>
 </body>
+
+
+<script>
+  new Vue({
+   el: '#app',
+   data(){
+     return{
+       disclaimer: 'The information provided by Team Fuchsia is intended for educational and informational purposes only and is not intended to be a substitute for professional medical advice, diagnosis, or treatment. The content on this website is not intended to diagnose, treat, cure, or prevent any disease or medical condition, including diabetes. The information provided by Team Fuchsia is based on general research and data and is not tailored to individual health conditions or circumstances. Therefore, Team Fuchsia cannot guarantee the accuracy, completeness, or timeliness of the information provided. If you suspect that you have diabetes or any other medical condition, you should consult a qualified healthcare provider immediately. Do not rely solely on the information provided by Team Fuchsia for your health or well-being. By viewing Team Fuchsia dashboard, you acknowledge and agree that Team Fuchsia is not responsible or liable for any claim, loss, or damage resulting from your use of the information provided.',
+       show: false
+     }
+   }
+ })
+</script>
 
 </html>
