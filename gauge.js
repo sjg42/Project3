@@ -1,97 +1,112 @@
-
-d3.json("project3data.json").then(
-  function(project3data)
-  {
-      // console.log()
-      console.log(project3data);
-
-
-  });
-
-    // Fetch the JSON data and plot the gauge chart
-d3.json("project3data.json").then((data) => {
-  //console.log(data)
-  // Get the Diabetes_binary, BMI, and HighBP data
-  let Diabetes_binary = data.map(data => data.Diabetes_binary);
-  //console.log(Diabetes_binary)
-  //let BMI = data.BMI;
-  let HighBP = data.map(data => data.HighBP);
-
-  // Get the select element from the HTML
-  let dropdown = d3.select("#selDataset");
-
-  // Populate the dropdown menu with the available options
-  let options = ["Diabetes_binary", "HighBP"];
-  options.forEach((option) => {
-    dropdown.append("option").text(option);
-  });
-let filteredData = 0
-
-  // Add an event listener to the dropdown menu to update the chart when a new option is selected
-  dropdown.on("change", function() {
-    
-    // Get the selected option from the dropdown menu
-    let selectedOption = this.value;
-    console.log(selectedOption)
-    console.log(HighBP)
-    if (selectedOption == "Diabetes_binary")
+//Use the D3 library to read in "samples.json"
+d3.json("project3data.json").then(function(data)
     {
-    filteredData = Diabetes_binary
-
+        //show data in console
+        console.log(data)
+        init(data)
     }
-    else{
-      filteredData = HighBP
-//console.log(HighBP)
-//console.log(filteredData)
-      }
-//console.log(filteredData)
-    // Filter the data based on the selected option
-    //let filteredData = data.selectedOption;
-    let val =filteredData.reduce((a,b) =>a+b, 0)/filteredData.length
+)
 
-console.log(val)
-
-    // Trace for the gauge chart
-    let trace = [{
-      type: "indicator",
-      mode: "gauge+number",
-      value: val,
-      gauge: {
-        axis: {
-          range: [null, 1],
-          tickvals: [0, 0.25, 0.5, 0.75, 1],
-          tickformat: '%'
-        },
-        steps: [
-          { range: [0, 0.4], color: "green" },
-          { range: [0.4, 0.75], color: "yellow" },
-          { range: [0.75, 1], color: "red" }
-        ],
-        threshold: {
-          line: { color: "red", width: 4 },
-          thickness: 0.75,
-          value: HighBP
-        },
-        bar: { color: "darkblue" },
-        number: {
-          suffix: "%",
-          font: { size: 30 },
-          valueformat: ".1f"
-        }
-      }
-    }];
-
-    // Layout for the gauge chart
-    let layout = {
-      title: { text: "<b>" + selectedOption + " Gauge</b><br>(High Blood Pressure)" },
-      font: { size: 18 }
-    };
-
-    // Use Plotly to plot the data in a gauge chart
-    Plotly.newPlot("gauge", trace, layout);
-  });
-});
+function init(jsonData)
+{
+  let filteredData = jsonData.map(jsonData=>jsonData.Diabetes_binary)
+  plot_data("Diabetes",filteredData,jsonData)
+  populate_dropdown(jsonData)
+}
 
 
+function optionChanged()
+{
+  d3.json("project3data.json").then(function(data)
+    {
+      // d3 selector on the dropdown menu
+    let dropdown = d3.select("#selDataset");
+
+    // access nested value property from the selected option
+    let value = dropdown.property("value");
+
+    let filteredData=0
+    //check what the value of the ID is 
+    if (value == "Diabetes")
+    {
+      filteredData = data.map(data=>data.Diabetes_binary)
+    }
+    else
+    {
+      filteredData = data.map(data=>data.HighBP)
+    }
+    plot_data(value, filteredData,data)
+  }
+  )
+}
+
+// call on d3 selector associate the dropdown with an object
+d3.selectAll("#selDataset")
 
 
+function populate_dropdown(jsonData)
+{
+  //make variable for Sample names
+  var columns = ["Diabetes","HighBP"]
+
+  //loop through each ID and create an option for it
+  //Reference - https://stackoverflow.com/questions/5182772/append-option-to-select-menu
+  columns.forEach((col,index)=>{
+
+      //create new option -> <option></option>
+      var option = document.createElement("option")
+
+      //set option parameters -> <option value = {name}> text </option>
+      option.value = col
+      option.text = col
+
+      //add to dropdown
+      var dropdown = document.getElementById("selDataset")
+      dropdown.append(option)
+  }
+  )
+}
+
+function plot_data(selectedOption, filteredData)
+{
+  // Filter the data based on the selected option
+        //let filteredData = data.selectedOption;
+        let percent =(filteredData.reduce((a,b) =>a+b, 0)/filteredData.length)
+        // Trace for the gauge chart
+        let trace = [{
+          type: "indicator",
+          mode: "gauge+number",
+          value: percent,
+          gauge: {
+            axis: {
+              range: [null, 1],
+              tickvals: [0, 0.25, 0.5, 0.75, 1],
+              tickformat: '%'
+            },
+            steps: [
+              { range: [0, .25], color: "green" },
+              { range: [.25, .75], color: "yellow" },
+              { range: [.75, 1], color: "red" }
+            ],
+            threshold: {
+              line: { color: "red", width: 4 },
+              thickness: 0.75,
+              value: filteredData.length
+            },
+            bar: { color: "white" },
+          },
+          number: {
+            font: { size: 30 },
+            valueformat: ".2%"
+          }
+        }];
+
+        // Layout for the gauge chart
+        let layout = {
+          title: { text: "<b> Percent of Population with " + selectedOption},
+          font: { size: 18 }
+        };
+
+        // Use Plotly to plot the data in a gauge chart
+        Plotly.newPlot("gauge", trace, layout);
+}
