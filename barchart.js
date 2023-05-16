@@ -125,7 +125,7 @@ d3.json("project3data.json").then(function(data){
 
     // Get trace information in order to plot data
     let trace1= {
-        x: ["HighBloodPressure", "NoBloodPressure"],
+        x: ["HighBloodPressure", "NoHighBloodPressure"],
         y: [per1, per2],
         name: "Blood Pressure",
         type: "bar",
@@ -145,7 +145,7 @@ d3.json("project3data.json").then(function(data){
     };
 
     let trace3= {
-        x: ["Stroke", "No Stroke"],
+        x: ["Stroke", "NoStroke"],
         y: [per5, per6],
         name: "Stroke",
         type: "bar",
@@ -180,7 +180,7 @@ d3.json("project3data.json").then(function(data){
 
     // create array for traces to be plotted together
     let info= [trace1, trace2,trace3,trace4,trace5];
-    
+
      // add layout properties
      let layout = {
         title: "Diabetic Health Indicators Compared",
