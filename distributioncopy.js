@@ -68,14 +68,14 @@ fetch('project3.csv')
     console.log(midpoints)
     // Prepare data for chart
     const datasets = [
-        {
+        {   label: "Diabetes",
             data: diabetesCount,
             backgroundColor: 'rgba(75, 192, 192, 0.2)',
             borderColor: 'rgba(75, 192, 192, 1)',
             borderWidth: 1,
             fill: false
         },
-        {
+        {   label: "No-Diabetes",
             data: nonDiabetesCount,
             backgroundColor: 'rgba(255, 99, 132, 0.2)',
             borderColor: 'rgba(255, 99, 132, 1)',
