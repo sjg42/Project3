@@ -38,7 +38,7 @@ The objective of the bar graph is to allow people to compare their own health to
 
 ### Line Graph
 
-<img width="812" alt="Screenshot 2023-05-17 at 3 39 45 PM" src="https://github.com/sjg42/Project3/assets/121995835/aa2711aa-37a1-4530-a2f8-8a88ca2393d6">
+<img width="949" alt="Screenshot 2023-05-17 at 4 10 11 PM" src="https://github.com/sjg42/Project3/assets/121995835/846e6ec5-7a49-42af-986a-1da7dcb16c1a">
 
 The objective of the line graph is to visualize the difference in the mean BMIs between the nondiabetic individuals and diabetic individuals. 
 
