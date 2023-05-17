@@ -27,18 +27,19 @@ fetch('project3.csv')
     var nonDiabetesCount = [];
     var midpoints = [];
     var bins = [];
-    var interval = 3;
-    var numOfBuckets = 2000;
+    var interval = 1;
+    var numOfBuckets = 100;
     //Setup Bins
     for(var i = 0; i < numOfBuckets; i += interval){
       bins.push({
           binNum: i,
-          minNum: i + 0.5,
-          maxNum: i + interval - 0.5,
+          minNum: i*interval + 0.5,
+          maxNum: i*interval + interval + 0.1,
           diabetesCount: 0,
           nonDiabetesCount: 0
       });
     }
+    console.log(bins.length)
     // Loop through data and count occurrences in respective bins
     for (var i = 0; i < columnE.length; i++){
       var item = parseFloat(columnE[i]);
@@ -59,37 +60,37 @@ fetch('project3.csv')
     // Extract bin data for plotting
     for (var i = 0; i < bins.length; i++) {
       var bin = bins[i];
-      var midpoint = (bin.minNum + bin.maxNum) / 2;
+      var midpoint = i+1
       midpoints.push(midpoint);
       diabetesCount.push(bin.diabetesCount);
       nonDiabetesCount.push(bin.nonDiabetesCount);
     }
+    console.log(midpoints)
     // Prepare data for chart
-    const chartData = {
-      datasets: [
+    const datasets = [
         {
-          label: 'Diabetes',
-          data: midpoints.map((midpoint, index) => ({ x: midpoint, y: diabetesCount[index] })),
-          backgroundColor: 'rgba(75, 192, 192, 0.2)',
-          borderColor: 'rgba(75, 192, 192, 1)',
-          borderWidth: 1,
-          fill: false
+            data: diabetesCount,
+            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+            borderColor: 'rgba(75, 192, 192, 1)',
+            borderWidth: 1,
+            fill: false
         },
         {
-          label: 'Non-Diabetes',
-          data: midpoints.map((midpoint, index) => ({ x: midpoint, y: nonDiabetesCount[index] })),
-          backgroundColor: 'rgba(255, 99, 132, 0.2)',
-          borderColor: 'rgba(255, 99, 132, 1)',
-          borderWidth: 1,
-          fill: false
+            data: nonDiabetesCount,
+            backgroundColor: 'rgba(255, 99, 132, 0.2)',
+            borderColor: 'rgba(255, 99, 132, 1)',
+            borderWidth: 1,
+            fill: false
         }
-      ]
-    };
+
+        ]
+  
+    console.log(datasets)
     // Create chart
     const ctx = document.getElementById('bellCurveChart').getContext('2d');
     new Chart(ctx, {
       type: 'line',
-      data: chartData,
+      data: {labels: midpoints, datasets:datasets},
       options: {
         scales: {
           x: {
@@ -155,15 +156,14 @@ fetch('project3.csv')
             }
           },
           y: {
-            display
-: true,
-title: {
-display: true,
-text: 'Count'
-}
-}
-}
-}
+            display: true,
+            title: {
+                display: true,
+                text: 'Count'
+            }
+            }
+        }
+        }
 });
 console.log(bins);
 ;
