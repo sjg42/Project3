@@ -1,86 +1,10 @@
-let url = "project3data.json"
-
-// Fetch the JSON data and console log it
-d3.json(url).then(function(data) {
-    console.log(data);
-  });
-  
-  
-  // Initialize the dashboard at start up 
-  function init() {
-  
-      // Use D3 to select the dropdown menu
-      let dropdownMenu = d3.select("#selDataset");
-  
-      // Use D3 to get sample names and populate the drop-down selector
-      d3.json(url).then((data) => {
-          
-          // Collects all sample names
-          let ID = data._id.$oid;
-  
-          // set a function to log each ID of each sample name
-          // also we create a drop down menu that allows us
-          // to select whichever ID we want to select and see 
-          // on our bar and bubble plots
-          ID.forEach((id) => {
-  
-              // Log the value of id for each iteration of the loop
-              console.log(id);
-  
-              dropdownMenu.append("option") // allows us to select 
-              .text(id); // shows each ID as an option to select
-          });
-  
-          // to get our initial value for each sample
-          // which includes all our needed values
-          let sample_one = ID[0];
-  
-          // Log the value of sample_one
-          console.log(sample_one);
-  
-          // Build the initial plots
-          Metadata(sample_one);
-          Bar(sample_one);
-          // these functions will be created before we
-          // ever call the init() function
-  
-      });
-  };
-  // Function that fills out our "Demographic Info" box
-function Metadata(sample) {
-
-    // Use D3 to retrieve all of the data
-    d3.json(url).then((data) => {
-
-        // Retrieve all metadata
-        let metadata = data.HighBP;
-
-        // Filter only to chosen ID
-        let v1Y = metadata.filter(result => result.HighBP == 1);
-        console.log(v1Y)
-        let v1N = metadata.filter(result => result.HighBP == 0);
-        console.log(v1N)
-        let v2Y = metadata.filter(result => result.HighChol == 1);
-        let v2N = metadata.filter(result => result.HighChol == 0);
-        let v3Y = metadata.filter(result => result.Smoker == 1);
-        let v3N = metadata.filter(result => result.Smoker == 0);
-        let v4Y = metadata.filter(result => result.Stroke == 1);
-        let v4N = metadata.filter(result => result.Stroke == 0);
-        let v5Y = metadata.filter(result => result.HeartDiseaseorAttack == 1);
-        let v5N = metadata.filter(result => result.HeartDiseaseorAttack == 0);
-        // remember, each ID will have all the subordinate demographic info
-
-    });
-};
-
-
 // use d3 to access data fron json file
 d3.json("project3data.json").then(function(data){
     //view data in console
     //console.log(data);
 });
 
-// functions that filter data for people with health risks (1)
+// functions that filter data for people with health indicators (1)
 function withHighBP(oneHBP)
 {return oneHBP.HighBP == 1}
 
@@ -96,7 +20,7 @@ function withStroke(oneStroke)
 function withHDorA(oneHDA)
 {return oneHDA.HeartDiseaseorAttack == 1}
 
-// functions that filter data for people without health risks (0)
+// functions that filter data for people without health indicators (0)
 function noHighBP(zeroHBP)
 {return zeroHBP.HighBP == 0}
 
@@ -112,48 +36,164 @@ function noStroke(zeroStroke)
 function noHDorA(zeroHDA)
 {return zeroHDA.HeartDiseaseorAttack== 0}
 
+// Establish variables for all 10 health indicators 
+var v1
+var v2
+var v3
+var v4
+var v5
+var v6
+var v7
+var v8
+var v9
+var v10
 
-// use data from json to plot charts
+// filter results to show each health risk with it's corresponding 1 or 0
 d3.json("project3data.json").then(function(data){
-
-    // filter results 
     let BP = data.filter(withHighBP);
-    //console.log(BP); //confirm values
+    //console.log(Object.keys(BP).length); //confirm values
+
     let noBP = data.filter(noHighBP);
-    //console.log(noBP); //confirm values
+    //console.log(Object.keys(noBP).length);
+
     let smoker = data.filter(withSmoke);
+    //console.log(Object.keys(smoker).length);
+
     let nonSmoker = data.filter(noSmoke);
+    //console.log(Object.keys(nonSmoker).length);
+
     let stroke = data.filter(withStroke);
+    //console.log(Object.keys(stroke).length);
+
+    let dontHaveStroke = data.filter(noStroke);
+    //console.log(Object.keys(dontHaveStroke).length);
+
     let HDorA = data.filter(withHDorA);
-    let noHeartDorA = data.filter(noHDorA);
+    //console.log(Object.keys(HDorA).length);
 
- 
+    let nHDorA = data.filter(noHDorA);
+
+    let HCh = data.filter(withHighChol);
+
+    let  nHCh = data.filter(noHighChol);
+
+    // variables for health indicator totals using the v1,v2, v3, etc.
+    v1 = Object.keys(BP).length
+    console.log("v1"+ v1);
+
+    v2 = Object.keys(noBP).length
+    console.log(v2);
+
+    var v3 = Object.keys(smoker).length
+    console.log(v3);
+
+    var v4 = Object.keys(nonSmoker).length
+    console.log(v4);
+
+    var v5 = Object.keys(stroke).length
+    console.log(v5);
+
+    var v6 = Object.keys(dontHaveStroke).length
+    console.log(v6);
+
+    var v7 = Object.keys(HDorA).length
+    console.log(v7);
+
+    var v8 = Object.keys(nHDorA).length
+    console.log(v8);
+
+    var v9 = Object.keys(HCh).length
+    console.log(v9);
+
+    var v10 = Object.keys(nHCh).length
+    console.log(v10);
+    
+    var population = v1 + v2
+    console.log((v1/population) * 100);
+
+    // calculate the population % for each health indicator
+    var per1 = (v1/population)*100
+    var per2 = (v2/population)*100
+    var per3 = (v3/population)*100
+    var per4 = (v4/population)*100
+    var per5 = (v5/population)*100
+    var per6 = (v6/population)*100
+    var per7 = (v7/population)*100
+    var per8 = (v8/population)*100
+    var per9 = (v9/population)*100
+    var per10 = (v10/population)*100
+
     // Get trace information in order to plot data
-    let diabeticTrace = {
-        x: BP.map(result => result.withHighBP),
-        y: smoker.map(result => result.withSmoke),
-        name: "Not at risk of Diabetes",
-        type: "bar"
+    let trace1= {
+        x: ["HighBloodPressure", "NoHighBloodPressure"],
+        y: [per1, per2],
+        name: "Blood Pressure",
+        type: "bar",
+        marker: {
+            opacity:[.5,.9]
+        }
     };
 
-    let nonDiabeticTrace = {
-        x: noBP.map(result => result.noHighBP),
-        y: nonSmoker.map(result => result.nonSmoker),
-        name: "At risk of Diabetes",
-        type: "bar"
+    let trace2= {
+        x: ["Smoker", "NonSmoker"],
+        y: [per3, per4],
+        name: "Smoking",
+        type: "bar",
+        marker: {
+            opacity:[.5,.9]
+        }
     };
+
+    let trace3= {
+        x: ["Stroke", "NoStroke"],
+        y: [per5, per6],
+        name: "Stroke",
+        type: "bar",
+        marker: {
+            opacity:[.5,.9]
+        }
+    };
+
+    let trace4= {
+        x: ["HeartDisease/Attack", "NoHeartDisease/Attack"],
+        y: [per7,per8],
+        name: "Heart Disease/Attack",
+        type: "bar",
+        marker: {
+            opacity:[.5,.9]
+        }
+    };
+
+    let trace5= {
+        x: ["HighCholesteral", "NoHighCholesterol"],
+        y: [per9, per10],
+        name: "Cholesterol",
+        type: "bar",
+        marker: {
+            opacity:[.5,.9]
+        }
+    };
+
+    var population = v1 + v2
+    console.log((v1/population) * 100);
+    
 
     // create array for traces to be plotted together
-    let info= [diabeticTrace, nonDiabeticTrace];
+    let info= [trace1, trace2,trace3,trace4,trace5];
 
-    // add layout properties
-    let layout = {
-        title: "Diabetic Risk vs Health Conditions in the Population",
-        barmode: "group"
+     // add layout properties
+     let layout = {
+        title: "Diabetic Health Indicators Compared",
+        xaxis: {
+            title: "Health Indicators"
+        },
+        yaxis: {
+            title: "Population %"
+        }, 
+        barmode: "group",
     };
+      // render plot to tag with id = "plot"
+      Plotly.newPlot("plot",info,layout)
+}); 
 
-    // render plot to tag with id = "plot"
-    Plotly.newPlot("plot",info, layout)
-
-});
 
