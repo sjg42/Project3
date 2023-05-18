@@ -34,7 +34,7 @@ The objective of the gauge is to allow the percent of the population with Type 2
 
 <img width="933" alt="Screenshot 2023-05-17 at 3 39 15 PM" src="https://github.com/sjg42/Project3/assets/121995835/d6c9283a-3c69-42ec-b281-7d0db05ef762">
 
-The objective of the bar graph is to allow people to compare their own health to common health indicators that may lead to diabetes. We compare these indicators and the total number of individuals who have experienced them in the data to the overall population %. We are aware that those with these indicators have a higher probability of developing Type 2 diabetes as opposed to those who do not.
+The objective of the bar graph is to allow people to compare their own health to common health indicators that may lead to diabetes. We compare these indicators and the total number of individuals who have experienced them in the data to the overall population percent. We are aware that those with these indicators have a higher probability of developing Type 2 diabetes as opposed to those who do not.
 
 ### Line Graph
 
