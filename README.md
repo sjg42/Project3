@@ -7,7 +7,7 @@
 
 Invoke the Diabetes Health Indicators Dataset to provide people who wish to explore and manage their risk factors for diabetes.  The goal of this dashboard is to raise awareness of the user and encourage early detection of risk factors for diabetes. The team will use MongoDB to first establish the database, and the utilize JS libraries such as D3, Bootstrap, and Vue.js to visualize the data. The data components will be tested for correlations and conditional probabilities such as: high blood pressure with diagnosis of diabetes or the probability of diabetes with two simultaneous indicators.  
 
-The dashboard will contain multiple visualizations for the data including a bar chart, gaurge, and line graph. 
+The dashboard will contain multiple visualizations for the data including a bar chart, gauge, and line graph. 
 
 ## Data
 
